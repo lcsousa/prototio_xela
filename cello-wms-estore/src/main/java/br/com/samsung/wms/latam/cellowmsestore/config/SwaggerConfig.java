@@ -1,62 +1,82 @@
 package br.com.samsung.wms.latam.cellowmsestore.config;
 
+import static springfox.documentation.builders.PathSelectors.regex;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 
+import io.swagger.models.auth.In;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig  {
+public class SwaggerConfig {
+private final String PACKAGE_CONTROLLER="br.com.samsung.wms.latam.cellowmsestore.controller";
 
-	   @Bean
-	    public Docket api() {
-	        return new Docket(DocumentationType.SWAGGER_2)
-	                .select()
-	                .apis(RequestHandlerSelectors.basePackage("br.com.samsung.wms.latam.cellowmsestore.controller"))
-	                .build()
-	                .apiInfo(metaData());
-	    }
+	@Bean
+	public Docket apiV1() {
 
-	    private ApiInfo metaData() {
-	        return new ApiInfoBuilder()
-	                .title("WMS Connector API - SAMSUNG SDS")
-	                .description("WMS Mobile API REST")
-	                .version("1.0")
-	                .contact(new Contact("Samsung SDS", "http://cellolatam.cellologistics.com.br/cello-marketing/", "mm.nogueira@samsung.com"))
-	                .license("Samsung SDS Latin America")
-	                .licenseUrl("http://cellolatam.cellologistics.com.br/cello-marketing/")
-	                .build();
-	    }
+		return new Docket(DocumentationType.SWAGGER_2).
+				groupName("V1")
+				.select()
+				.apis(RequestHandlerSelectors.basePackage(PACKAGE_CONTROLLER))
+				.paths(regex(".*/v1.*")).build().apiInfo(metaData("1.0"))
+				.useDefaultResponseMessages(false)
+				.securitySchemes(Arrays.asList(new ApiKey("Token Access", HttpHeaders.AUTHORIZATION, In.HEADER.name())))
+		        .securityContexts(Arrays.asList(securityContext()));
+	}
 
-//	@Bean
-//	public Docket api() {
-//		return new Docket(DocumentationType.SWAGGER_2)
-//				.select()
-//				.apis(RequestHandlerSelectors.basePackage("br.com.samsung.wms.latam.cellowmsestore.controller"))
-//				.paths(PathSelectors.any()).build()
-//				.pathMapping("/")
-//				.useDefaultResponseMessages(false)
-//				.tags(new Tag("cellowmsestore", "Description of Cello WMS Estore API"))
-//				.apiInfo(apiInfo());
-//
-//	}
-//
-//	private ApiInfo apiInfo() {
-//		return new ApiInfoBuilder().title("Cello WMS Estore API Rest")
-//				.description("Documentation of Cello WMS estore API Rest")
-//				.version("1.0")
-//				.license("Samsung SDS Latin America")
-//				.licenseUrl("http://cellolatam.cellologistics.com.br/cello-marketing/")
-//				.contact(new Contact("Samsung SDS", "http://cellolatam.cellologistics.com.br/cello-marketing/", "mm.nogueira@samsung.com"))
-//				.build();
-//	}
+	@Bean
+	public Docket apiV2() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("V2")				
+				.select()
+				.apis(RequestHandlerSelectors.basePackage(PACKAGE_CONTROLLER))				
+				.paths(regex(".*/v2.*")).build().apiInfo(metaData("2.0"))
+				.useDefaultResponseMessages(false).securitySchemes(Arrays.asList(new ApiKey("Token Access", HttpHeaders.AUTHORIZATION, In.HEADER.name())))
+		        .securityContexts(Arrays.asList(securityContext()));
+	}
+	
+	private ApiInfo metaData(String version) {
+		return new ApiInfoBuilder().title("WMS Connector API - SAMSUNG SDS").description("WMS Mobile API REST")
+				.version(version)
+				.contact(new Contact("Samsung SDS", "http://cellolatam.cellologistics.com.br/cello-marketing/",
+						"mm.nogueira@samsung.com"))
+				.license("Samsung SDS Latin America")
+				.licenseUrl("http://cellolatam.cellologistics.com.br/cello-marketing/").build();
+	}
+	
+	private SecurityContext securityContext() {
+	    return SecurityContext.builder()
+	        .securityReferences(defaultAuth())
+	        .forPaths(PathSelectors.ant("/pessoa/**"))
+	        .build();
+	}
+	
+	List<SecurityReference> defaultAuth() {
+	    AuthorizationScope authorizationScope
+	        = new AuthorizationScope("ADMIN", "accessEverything");
+	    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+	    authorizationScopes[0] = authorizationScope;
+	    return Arrays.asList(
+	        new SecurityReference("Token Access", authorizationScopes));
+	}
+
 
 
 }
