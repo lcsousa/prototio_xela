@@ -1,4 +1,4 @@
-package br.com.samsung.wms.latam.cellowmsestore.controller.version1;
+package br.com.samsung.wms.latam.cellowmsestore.controller.version;
 
 
 import java.util.List;
