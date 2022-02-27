@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "0ae40102-0d39-4d95-bb70-ac126bce759b",
+		"name": "Security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth - Authenticate - Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"luisAdmin\",\r\n    \"password\":\"jah\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - Authenticate - Analista",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"luisAnalist\",\r\n    \"password\":\"jah\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - Refresh Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQWRtaW4iLCJleHAiOjE2NDU5OTEyNzR9.denaOf_Y009KHa6GCwdboU2Xch-jMa2AbszkkLzbpBZyLycGdHjRpYq-_swlgYuviNTX7knRbHbGh2h-VGvDWQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQW5hbGlzdCIsImV4cCI6MTY0NTk5MTI3OH0.Nq53Uf4we-i3xhgIdiX7seJjkAqcXmCtI2mQgI_Ng2faaLWtAo1T_3hgqSBHhU4MmTrpbxueozdhTSYBnpFfkg\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/refreshToken",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"refreshToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - Identity User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQWRtaW4iLCJleHAiOjE2NDU5OTEyNzR9.denaOf_Y009KHa6GCwdboU2Xch-jMa2AbszkkLzbpBZyLycGdHjRpYq-_swlgYuviNTX7knRbHbGh2h-VGvDWQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQW5hbGlzdCIsImV4cCI6MTY0NTk5MTI3OH0.Nq53Uf4we-i3xhgIdiX7seJjkAqcXmCtI2mQgI_Ng2faaLWtAo1T_3hgqSBHhU4MmTrpbxueozdhTSYBnpFfkg\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/identityUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"identityUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - ListAll",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQW5hbGlzdCIsImV4cCI6MTY0NTk5MTQ5MX0.OO2TFbDzGn9eQ-EdnsscBnKQ8fENbNV4NbYWd1vwpT00sItTGbLHvJ3DwWrESfqo1eSYN1d4mpaj4Hw2VJlc9",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzMSIsImV4cCI6MTY0NTk4MzI2NX0.LfGwRHtGA5qa6SAhtx5QOs0cSEFlczNlSwsUGT61UBdBpp2XQRb6U2S_xRlJEYCk0TaqzJpBtFF71kHzLhmmNw",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"luis\",\r\n    \"password\":\"jah\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/usuario/findAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"usuario",
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Save",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQW5hbGlzdCIsImV4cCI6MTY0NTk5MTI3OH0.Nq53Uf4we-i3xhgIdiX7seJjkAqcXmCtI2mQgI_Ng2faaLWtAo1T_3hgqSBHhU4MmTrpbxueozdhTSYBnpFfkg",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"luis_jah2\",\r\n    \"password\":\"jah\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/usuario/salvar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"usuario",
+						"salvar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
