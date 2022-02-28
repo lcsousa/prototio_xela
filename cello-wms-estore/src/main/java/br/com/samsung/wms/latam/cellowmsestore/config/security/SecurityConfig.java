@@ -11,15 +11,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import br.com.samsung.wms.latam.cellowmsestore.filter.security.AuthValidateCustomFilter;
+import br.com.samsung.wms.latam.cellowmsestore.filter.security.AuthorizationCustomFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AuthConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	
 	/*
 	 * @Autowired private UserDetailsService userDetailsService;
 	 */
+	 
     
 	String[] whiteList ={"/v1/auth/login"
 						,"/h2-console"
@@ -48,16 +50,26 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.antMatchers(whiteList).permitAll()
-				.anyRequest().authenticated();
+				.anyRequest().authenticated()
+				.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 		http.addFilterBefore(authenticationTokenFilterBean(),UsernamePasswordAuthenticationFilter.class);
 		http.headers().cacheControl();
 	}
 
 	@Bean
-	public AuthValidateCustomFilter authenticationTokenFilterBean() {
-		return new AuthValidateCustomFilter();
+	public AuthorizationCustomFilter authenticationTokenFilterBean() {
+		return new AuthorizationCustomFilter();
+	}
+	
+	@Bean
+	SecurityExceptionHandleEntryPoint authenticationEntryPoint() {
+		return new SecurityExceptionHandleEntryPoint();
 	}
 
 
+	/*
+	 * @Bean RestAccessDeniedHandler accessDeniedHandler() { return new
+	 * RestAccessDeniedHandler(); }
+	 */
 
 }

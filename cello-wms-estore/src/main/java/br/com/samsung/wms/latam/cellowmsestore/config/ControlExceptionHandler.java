@@ -1,5 +1,6 @@
 package br.com.samsung.wms.latam.cellowmsestore.config;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -22,8 +24,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import br.com.samsung.wms.latam.cellowmsestore.exception.BusinessException;
 import br.com.samsung.wms.latam.cellowmsestore.exception.ExceptionResolver;
+import br.com.samsung.wms.latam.cellowmsestore.exception.SecurityLocalException;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 
@@ -37,6 +46,27 @@ public class ControlExceptionHandler {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		return ResponseEntity.status(ex.getHttpStatusCode()).headers(responseHeaders).body(ex.getOnlyBody());
 
+	}
+	
+	@ExceptionHandler(value = { AccessDeniedException.class})
+	protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException eThrowable, WebRequest request) {
+		
+		SecurityLocalException ex = SecurityLocalException.builder()
+				.httpStatusCode(HttpStatus.FORBIDDEN)
+				.code(String.valueOf(HttpStatus.FORBIDDEN.value()))
+				.message("Falha na Autorização.")
+				.description("Usuário não possui permissão para acessar a URL solicitada" )
+				.build();
+		HttpHeaders responseHeaders = new HttpHeaders();
+
+		return ResponseEntity.status(ex.getHttpStatusCode()).headers(responseHeaders).body(ex.getOnlyBody());
+		
+		/*
+		 * HttpHeaders responseHeaders = new HttpHeaders(); return
+		 * ResponseEntity.status(HttpStatus.FORBIDDEN).headers(responseHeaders).body(new
+		 * BusinessExceptionBody(HttpStatus.FORBIDDEN.toString(), "Acesso Negado",
+		 * CONSTRAINT_VALIDATION_FAILED));
+		 */
 	}
 
 	@ExceptionHandler({ Throwable.class })
@@ -173,5 +203,19 @@ public class ControlExceptionHandler {
 		return ResponseEntity.status(ex.getHttpStatusCode()).headers(responseHeaders).body(ex.getOnlyBody());
 	}
 
+	
+	   @Data
+	    @Builder
+	    @NoArgsConstructor
+	    @AllArgsConstructor
+	    @JsonInclude(JsonInclude.Include.NON_NULL)
+	    public static class BusinessExceptionBody {
+	        private String code;
+
+	        private String message;
+
+	        private String description;
+
+	    }
 
 }

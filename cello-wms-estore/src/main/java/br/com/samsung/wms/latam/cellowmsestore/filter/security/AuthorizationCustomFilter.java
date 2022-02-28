@@ -21,7 +21,7 @@ import br.com.samsung.wms.latam.cellowmsestore.entity.security.RoleAuthEnum;
 import br.com.samsung.wms.latam.cellowmsestore.service.security.AuthService;
 import br.com.samsung.wms.latam.cellowmsestore.service.security.UserService;
 
-public class AuthValidateCustomFilter extends OncePerRequestFilter {
+public class AuthorizationCustomFilter extends OncePerRequestFilter {
 	@Autowired
 	private  AuthService authServiceImpl;
 	@Autowired
