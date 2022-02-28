@@ -14,4 +14,6 @@ public class AuthUtil {
 	//@Value ( "${jwt.expiration}" )
 	private int expiration = 600000;
 	
+	private String tokenTyper = "Bearer";
+	
 }

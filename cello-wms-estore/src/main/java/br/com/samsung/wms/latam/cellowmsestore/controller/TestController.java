@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,6 +47,7 @@ public class TestController {
 
 	})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAnyRole('ROLE_TEST_FINDALL')")
 	public ResponseEntity<List<TestDTO>> findAll() throws Exception {
 
 		log.info("Find all tests");
@@ -61,6 +63,7 @@ public class TestController {
 			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAnyRole('ROLE_TEST_FIND')")
 	public ResponseEntity<TestDTO> findById(@Valid @PathVariable Long id) throws Exception {
 
 		log.info("Buscar test {}", id);
@@ -76,6 +79,7 @@ public class TestController {
 			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAnyRole('ROLE_TEST_CREATE')")
 	public ResponseEntity<TestDTO> save(
 			@Valid @RequestBody @ApiParam(value = "TestDto", required = true, name = "testDto") TestDTO testDTO)
 			throws Exception {
@@ -93,6 +97,7 @@ public class TestController {
 			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAnyRole('ROLE_TEST_UPDATE')")
 	public ResponseEntity<TestDTO> update(@Valid @PathVariable Long id,
 			@Valid @RequestBody @ApiParam(value = "TestDtos", required = true, name = "testDto") TestDTO testDTO)
 			throws Exception {
@@ -111,6 +116,7 @@ public class TestController {
 			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_TEST_DELETE')")
 	public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
 
 		log.info("Delete test {}", id);

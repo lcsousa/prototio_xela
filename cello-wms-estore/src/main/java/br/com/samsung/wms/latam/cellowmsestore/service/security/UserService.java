@@ -77,14 +77,24 @@ public class UserService {
 		if (usuarioModel.getId() % 2 == 1) {
 			listaRole.add(RoleAuthEnum.ROLE_USER_CREATE);
 			listaRole.add(RoleAuthEnum.ROLE_USER_FINDALL);
+			
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_REFRESH_TOKEN);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_IDENTITY_USER);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_GET_ROLES);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_HAS_ROLE);
 			
+			listaRole.add(RoleAuthEnum.ROLE_TEST_CREATE);
+			listaRole.add(RoleAuthEnum.ROLE_TEST_FINDALL);
+			listaRole.add(RoleAuthEnum.ROLE_TEST_UPDATE);
+			listaRole.add(RoleAuthEnum.ROLE_TEST_FIND);
+			listaRole.add(RoleAuthEnum.ROLE_TEST_DELETE);
+			  
+			
 			
 		} else {
 			listaRole.add(RoleAuthEnum.ROLE_USER_FINDALL);
+			listaRole.add(RoleAuthEnum.ROLE_TEST_FINDALL);
+			listaRole.add(RoleAuthEnum.ROLE_TEST_FIND);
 		}
 		usuarioModel.setListRole(listaRole);
 	}

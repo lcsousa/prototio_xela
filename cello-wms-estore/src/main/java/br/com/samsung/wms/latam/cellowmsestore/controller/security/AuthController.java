@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.HasRolesRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.HasRolesResponseDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.IdentityUserByTokenRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.LoginRequestDTO;
-import br.com.samsung.wms.latam.cellowmsestore.dto.security.TokenDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.RefreshTokenRequestDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.RoleUserByTokenRequestDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.TokenLoginResponseDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.UserDTO;
 import br.com.samsung.wms.latam.cellowmsestore.entity.security.RoleAuthEnum;
 import br.com.samsung.wms.latam.cellowmsestore.exception.BusinessException.BusinessExceptionBody;
@@ -39,7 +42,7 @@ public class AuthController {
 	 */
 	@ApiOperation(value = "Endpoint de autenticação de usuário")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = TokenDTO.class),
+			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = TokenLoginResponseDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
@@ -47,14 +50,14 @@ public class AuthController {
 
 	})
 	@PostMapping(value="/login",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TokenDTO> login(@Valid @RequestBody LoginRequestDTO usuario) {
+	public ResponseEntity<TokenLoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO usuario) {
 		log.info("Login user");
-		return ResponseEntity.ok(service.login(usuario.getLogin(), usuario.getPassword()));
+		return ResponseEntity.ok(service.login(usuario));
 	}
 	
 	@ApiOperation(value = "Endpoint de refreshToken - Obtém um novo token válido")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = TokenDTO.class),
+			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = RefreshTokenRequestDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
@@ -63,9 +66,9 @@ public class AuthController {
 	})
 	@PostMapping(value="/refreshToken",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyRole('ROLE_AUTH_REFRESH_TOKEN')")	
-	public ResponseEntity<TokenDTO> login(@Valid @RequestBody TokenDTO token) {
+	public ResponseEntity<TokenLoginResponseDTO> login(@Valid @RequestBody RefreshTokenRequestDTO token) {
 		log.info("refreshToken");
-		return ResponseEntity.ok(service.refreshToken(token));
+		return ResponseEntity.ok(service.refreshToken(token.getAccessToken()));
 	}
 	
 	
@@ -81,9 +84,9 @@ public class AuthController {
 	})
 	@PostMapping(value="/identityUser",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyRole('ROLE_AUTH_IDENTITY_USER')")	
-	public ResponseEntity<UserDTO> getUserByToken(@Valid @RequestBody TokenDTO token) {
+	public ResponseEntity<UserDTO> getUserByToken(@Valid @RequestBody IdentityUserByTokenRequestDTO token) {
 		log.info("getUserByToken");
-		return ResponseEntity.ok(service.getUserByToken(token));
+		return ResponseEntity.ok(service.getUserByToken(token.getAccessToken()));
 	}
 	
 	
@@ -98,9 +101,9 @@ public class AuthController {
 	})
 	@PostMapping(value="/getRoles",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyRole('ROLE_AUTH_GET_ROLES')")	
-	public ResponseEntity<List<RoleAuthEnum>> getRoles(@Valid @RequestBody TokenDTO token) {
+	public ResponseEntity<List<RoleAuthEnum>> getRoles(@Valid @RequestBody RoleUserByTokenRequestDTO token) {
 		log.info("getRoles");
-		return ResponseEntity.ok(service.getRolesByToken(token));
+		return ResponseEntity.ok(service.getRolesByToken(token.getAccessToken()));
 	}
 	
 	@ApiOperation(value = "Endpoint que verifica se o usuário possui uma determinada Role")

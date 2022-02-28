@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.SaveUserRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.UserDTO;
-import br.com.samsung.wms.latam.cellowmsestore.entity.security.UserEntity;
 import br.com.samsung.wms.latam.cellowmsestore.exception.BusinessException.BusinessExceptionBody;
 import br.com.samsung.wms.latam.cellowmsestore.service.security.UserService;
 import io.swagger.annotations.Api;

@@ -18,7 +18,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.HasRolesRequestDTO;
-import br.com.samsung.wms.latam.cellowmsestore.dto.security.TokenDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.LoginRequestDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.TokenLoginResponseDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.UserDTO;
 import br.com.samsung.wms.latam.cellowmsestore.entity.security.RoleAuthEnum;
 import br.com.samsung.wms.latam.cellowmsestore.entity.security.UserEntity;
@@ -37,27 +38,34 @@ public class AuthService {
 	@Autowired
 	private UserMapper userMapper;
 
-	public TokenDTO login(String username, String password) throws UsernameNotFoundException {
-		TokenDTO retorno = null;
+	public TokenLoginResponseDTO login(LoginRequestDTO userLogin) throws UsernameNotFoundException {
+		String username = userLogin.getLogin();
+		String password = userLogin.getPassword();
+		
+		TokenLoginResponseDTO retorno = null;
 		UserEntity usuario = userService.findByLoginAndPassword(username, password);
 		if (!ObjectUtils.isEmpty(usuario)) {
-			retorno = new TokenDTO();
-			retorno.setToken(createToken(username, null));			
+			retorno = new TokenLoginResponseDTO();
+			retorno.setAccessToken(createToken(username, null));
+			retorno.setExpiresIn(authUtil.getExpiration());
+			retorno.setTokenType(authUtil.getTokenTyper());
 		}
 
 		return retorno;
 	}
 
-	public TokenDTO refreshToken(TokenDTO token) {
-		TokenDTO retorno = new TokenDTO();
-		DecodedJWT decode = JWT.decode(token.getToken());
+	public TokenLoginResponseDTO refreshToken(String token) {
+		TokenLoginResponseDTO retorno = new TokenLoginResponseDTO();
+		DecodedJWT decode = JWT.decode(token);
 		String login = decode.getSubject();
 		Map<String, Claim> mapClaims = decode.getClaims();
-		retorno.setToken(createToken(login, mapClaims));
+		retorno.setAccessToken(createToken(login, mapClaims));
+		retorno.setExpiresIn(authUtil.getExpiration());
+		retorno.setTokenType(authUtil.getTokenTyper());
 		return retorno;
 	}
-	public UserDTO getUserByToken(TokenDTO token) {
-		String login = getLoginByToken(token.getToken()) ;
+	public UserDTO getUserByToken(String token) {
+		String login = getLoginByToken(token) ;
 		return userMapper.convertEntityToDto(userService.findByLogin(login));
 	}
 
@@ -97,9 +105,9 @@ public class AuthService {
 				.sign(Algorithm.HMAC512(authUtil.getSecret()));
 	}
 	
-	public List<RoleAuthEnum> getRolesByToken(TokenDTO token) {
+	public List<RoleAuthEnum> getRolesByToken(String token) {
 		List<RoleAuthEnum> retorno = null;
-		String login = getLoginByToken(token.getToken()) ;
+		String login = getLoginByToken(token) ;
 		if(!ObjectUtils.isEmpty(login)) {
 			UserEntity user = userService.findByLogin(login);
 			if(!ObjectUtils.isEmpty(user)) {
