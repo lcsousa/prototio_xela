@@ -1,4 +1,6 @@
-package br.com.samsung.wms.latam.cellowmsestore.service;
+package br.com.samsung.wms.latam.cellowmsestore.service.security;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +11,23 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
-import br.com.samsung.wms.latam.cellowmsestore.model.RoleAuthEnum;
-import br.com.samsung.wms.latam.cellowmsestore.model.UserEntity;
-import br.com.samsung.wms.latam.cellowmsestore.repository.UserRepository;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.SaveUserRequestDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.UserDTO;
+import br.com.samsung.wms.latam.cellowmsestore.entity.security.RoleAuthEnum;
+import br.com.samsung.wms.latam.cellowmsestore.entity.security.UserEntity;
+import br.com.samsung.wms.latam.cellowmsestore.mapper.security.UserMapper;
+import br.com.samsung.wms.latam.cellowmsestore.repository.security.UserRepository;
 
 @Component
 public class UserService {
+	
+	@Autowired
+	private UserMapper userMapper;
+	
 	@Autowired
 	private UserRepository repository;
 
-	public List<UserEntity> findAll() throws UsernameNotFoundException {
+	public List<UserDTO> findAll() throws UsernameNotFoundException {
 		List<UserEntity> listAll = repository.findAll();
 		if(!ObjectUtils.isEmpty(listAll)) {
 			listAll.stream().forEach(model ->{
@@ -28,7 +37,7 @@ public class UserService {
 			
 		}
 		
-		return listAll;
+		return userMapper.convertListEntitysToDtos(listAll);
 	}
 	
 	public UserEntity findByLogin(String username) throws UsernameNotFoundException {
@@ -57,10 +66,10 @@ public class UserService {
 	
 	
 	
-	public UserEntity save(UserEntity usuarioModel) throws UsernameNotFoundException {
-		usuarioModel = repository.save(usuarioModel);
-		setRole(usuarioModel);
-		return usuarioModel;
+	public UserDTO save(SaveUserRequestDTO usuarioModel) throws UsernameNotFoundException {
+		UserEntity entity = repository.save(userMapper.convertSaveDtoToEntity(usuarioModel));
+		setRole(entity);
+		return userMapper.convertEntityToDto(entity);
 	}
 	
 	private void setRole(UserEntity usuarioModel) {

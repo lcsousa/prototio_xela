@@ -37,7 +37,7 @@ private final String PACKAGE_CONTROLLER="br.com.samsung.wms.latam.cellowmsestore
 				.apis(RequestHandlerSelectors.basePackage(PACKAGE_CONTROLLER))
 				.paths(regex(".*/v1.*")).build().apiInfo(metaData("1.0"))
 				.useDefaultResponseMessages(false)
-				.securitySchemes(Arrays.asList(new ApiKey("Token Access", HttpHeaders.AUTHORIZATION, In.HEADER.name())))
+				.securitySchemes(Arrays.asList(apiKey()))
 		        .securityContexts(Arrays.asList(securityContext()));
 	}
 
@@ -48,7 +48,8 @@ private final String PACKAGE_CONTROLLER="br.com.samsung.wms.latam.cellowmsestore
 				.select()
 				.apis(RequestHandlerSelectors.basePackage(PACKAGE_CONTROLLER))				
 				.paths(regex(".*/v2.*")).build().apiInfo(metaData("2.0"))
-				.useDefaultResponseMessages(false).securitySchemes(Arrays.asList(new ApiKey("Token Access", HttpHeaders.AUTHORIZATION, In.HEADER.name())))
+				.useDefaultResponseMessages(false)
+				.securitySchemes(Arrays.asList(apiKey()))
 		        .securityContexts(Arrays.asList(securityContext()));
 	}
 	
@@ -61,20 +62,23 @@ private final String PACKAGE_CONTROLLER="br.com.samsung.wms.latam.cellowmsestore
 				.licenseUrl("http://cellolatam.cellologistics.com.br/cello-marketing/").build();
 	}
 	
+	private ApiKey apiKey() {
+		return new ApiKey("JWT", "Authorization", "header");
+	}
 	private SecurityContext securityContext() {
 	    return SecurityContext.builder()
 	        .securityReferences(defaultAuth())
-	        .forPaths(PathSelectors.ant("/pessoa/**"))
+	        //.forPaths(PathSelectors.ant("/pessoa/**"))
 	        .build();
 	}
 	
 	List<SecurityReference> defaultAuth() {
 	    AuthorizationScope authorizationScope
-	        = new AuthorizationScope("ADMIN", "accessEverything");
+	        = new AuthorizationScope("global", "accessEverything");
 	    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 	    authorizationScopes[0] = authorizationScope;
 	    return Arrays.asList(
-	        new SecurityReference("Token Access", authorizationScopes));
+	        new SecurityReference("JWT", authorizationScopes));
 	}
 
 

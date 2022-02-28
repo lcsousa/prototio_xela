@@ -1,4 +1,4 @@
-package br.com.samsung.wms.latam.cellowmsestore.service;
+package br.com.samsung.wms.latam.cellowmsestore.service.security;
 
 import java.util.Date;
 import java.util.List;
@@ -17,11 +17,13 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
-import br.com.samsung.wms.latam.cellowmsestore.dto.HasRolesRequestDTO;
-import br.com.samsung.wms.latam.cellowmsestore.dto.TokenDTO;
-import br.com.samsung.wms.latam.cellowmsestore.model.RoleAuthEnum;
-import br.com.samsung.wms.latam.cellowmsestore.model.UserEntity;
-import br.com.samsung.wms.latam.cellowmsestore.service.util.AuthUtil;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.HasRolesRequestDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.TokenDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.UserDTO;
+import br.com.samsung.wms.latam.cellowmsestore.entity.security.RoleAuthEnum;
+import br.com.samsung.wms.latam.cellowmsestore.entity.security.UserEntity;
+import br.com.samsung.wms.latam.cellowmsestore.mapper.security.UserMapper;
+import br.com.samsung.wms.latam.cellowmsestore.util.security.AuthUtil;
 
 @Component
 public class AuthService {
@@ -31,6 +33,9 @@ public class AuthService {
 
 	@Autowired
 	private AuthUtil authUtil;
+	
+	@Autowired
+	private UserMapper userMapper;
 
 	public TokenDTO login(String username, String password) throws UsernameNotFoundException {
 		TokenDTO retorno = null;
@@ -51,9 +56,9 @@ public class AuthService {
 		retorno.setToken(createToken(login, mapClaims));
 		return retorno;
 	}
-	public UserEntity getUserByToken(TokenDTO token) {
+	public UserDTO getUserByToken(TokenDTO token) {
 		String login = getLoginByToken(token.getToken()) ;
-		return userService.findByLogin(login);
+		return userMapper.convertEntityToDto(userService.findByLogin(login));
 	}
 
 	public boolean validateToken(String token) throws UsernameNotFoundException {

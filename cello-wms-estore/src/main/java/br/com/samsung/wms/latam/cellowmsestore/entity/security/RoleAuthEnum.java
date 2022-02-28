@@ -1,4 +1,4 @@
-package br.com.samsung.wms.latam.cellowmsestore.model;
+package br.com.samsung.wms.latam.cellowmsestore.entity.security;
 
 public enum RoleAuthEnum {
 	ROLE_USER_CREATE 

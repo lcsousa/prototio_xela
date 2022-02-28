@@ -1,5 +1,4 @@
-package br.com.samsung.wms.latam.cellowmsestore.controller.version;
-
+package br.com.samsung.wms.latam.cellowmsestore.controller;
 
 import java.util.List;
 
@@ -29,10 +28,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping(value="/v2/test")
+@RequestMapping("/v1/test")
 @Slf4j
-@Api(tags = {"cellowmsestore"})
-public class TestControllerV2 {
+@Api(tags = { "cellowmsestore" })
+public class TestController {
 
 	@Autowired
 	public TestService service;

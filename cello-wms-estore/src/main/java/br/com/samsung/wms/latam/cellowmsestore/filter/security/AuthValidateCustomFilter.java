@@ -1,4 +1,4 @@
-package br.com.samsung.wms.latam.cellowmsestore.filter;
+package br.com.samsung.wms.latam.cellowmsestore.filter.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,9 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.samsung.wms.latam.cellowmsestore.model.RoleAuthEnum;
-import br.com.samsung.wms.latam.cellowmsestore.service.AuthService;
-import br.com.samsung.wms.latam.cellowmsestore.service.UserService;
+import br.com.samsung.wms.latam.cellowmsestore.entity.security.RoleAuthEnum;
+import br.com.samsung.wms.latam.cellowmsestore.service.security.AuthService;
+import br.com.samsung.wms.latam.cellowmsestore.service.security.UserService;
 
 public class AuthValidateCustomFilter extends OncePerRequestFilter {
 	@Autowired

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.samsung.wms.latam.cellowmsestore.dto.TestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.entity.TestEntity;
-import br.com.samsung.wms.latam.cellowmsestore.exception.BusinessException;
 import br.com.samsung.wms.latam.cellowmsestore.exception.MessageBusiness;
 import br.com.samsung.wms.latam.cellowmsestore.mapper.TestMapper;
 import br.com.samsung.wms.latam.cellowmsestore.repository.TestRepository;
