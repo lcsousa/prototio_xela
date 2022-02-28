@@ -11,6 +11,7 @@ import br.com.samsung.wms.latam.cellowmsestore.entity.TestEntity;
 import br.com.samsung.wms.latam.cellowmsestore.exception.MessageBusiness;
 import br.com.samsung.wms.latam.cellowmsestore.mapper.TestMapper;
 import br.com.samsung.wms.latam.cellowmsestore.repository.TestRepository;
+import br.com.samsung.wms.latam.cellowmsestore.service.http.FeignClientDocumentService;
 
 @Service
 public class TestService {
@@ -20,6 +21,9 @@ public class TestService {
 
 	@Autowired
 	private TestRepository testRepository;
+	
+	@Autowired
+	private FeignClientDocumentService feignClientDocumentService;
 
 	public List<TestDTO> findAll() {
 
@@ -29,8 +33,16 @@ public class TestService {
 
 	public TestDTO findById(Long id) {
 		Optional<TestEntity> testEntity = testRepository.findById(id);
+		
 		if (testEntity.isPresent()) {
-			return testMapper.convertEntityToDto(testEntity.get());
+			
+			TestDTO testDTO = testMapper.convertEntityToDto(testEntity.get());
+			
+			String documentNumber = feignClientDocumentService.listDocuments().get(0).getDocumentNumber();
+			
+			testDTO.setDescription(testDTO.getDescription().concat(documentNumber));
+			
+			return testDTO;
 		}else {
 			throw MessageBusiness.NOT_FOUND.createException();
 		}
