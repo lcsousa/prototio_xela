@@ -58,7 +58,7 @@ public class AuthorizationCustomFilter extends OncePerRequestFilter {
 
 	private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
 		String login = null;
-		if(authServiceImpl.validateToken(token)) {
+		if(authServiceImpl.validateToken(token) && authServiceImpl.isAccessToken(token)) {
 			login = authServiceImpl.getLoginByToken(token);			
 		}
 

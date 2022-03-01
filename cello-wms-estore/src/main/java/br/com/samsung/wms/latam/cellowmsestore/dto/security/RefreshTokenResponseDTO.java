@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TokenLoginResponseDTO {
+public class RefreshTokenResponseDTO {
 	
 	@JsonProperty("access_token")
 	private String accessToken;
@@ -15,6 +15,4 @@ public class TokenLoginResponseDTO {
 	private Integer expiresIn;
 	@JsonProperty("token_type")
 	private String tokenType;
-	@JsonProperty("refresh_token")
-	private String refreshToken;
 }

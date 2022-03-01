@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class RefreshTokenRequestDTO {
 	
-	@ApiModelProperty(value = "Access Token do usuário", name = "token", dataType = "String", example = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQWRtaW4iLCJleHAiOjE2NDYwODA1MTB9.C1g67D05FyIBDt8w9PKWHp_4bzqkz-n_AI3fY5Qd-2D00ndWGhxWHrBaV6_ybRXpUHbcBP260KSAZy-bSWW_4g")
-	private String accessToken;
+	@ApiModelProperty(value = "Refresh Token do usuário", name = "token", dataType = "String", example = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWlzQWRtaW4iLCJDTEFJTV9UT0tFTl9UWVBFIjoiUkVGUkVTSF9UT0tFTiIsImV4cCI6MTY0NjA5NDQwNH0.nPHM_0v1Rx8uCXalqyKizHCftaWLeokZVP2z47qdP9m21f3ccwlV_j0iLPIaEsiVNGqj4rgzvQYgLqtcc_m27w")
+	private String refreshToken;
 	
 }

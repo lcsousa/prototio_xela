@@ -9,15 +9,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.ChangePasswordRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.HasRolesRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.HasRolesResponseDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.IdentityUserByTokenRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.LoginRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.RefreshTokenRequestDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.RefreshTokenResponseDTO;
+import br.com.samsung.wms.latam.cellowmsestore.dto.security.ResetPasswordRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.RoleUserByTokenRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.TokenLoginResponseDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.UserDTO;
@@ -57,18 +61,18 @@ public class AuthController {
 	
 	@ApiOperation(value = "Endpoint de refreshToken - Obtém um novo token válido")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = RefreshTokenRequestDTO.class),
+			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = RefreshTokenResponseDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
-
+ 
 	})
 	@PostMapping(value="/refreshToken",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyRole('ROLE_AUTH_REFRESH_TOKEN')")	
-	public ResponseEntity<TokenLoginResponseDTO> login(@Valid @RequestBody RefreshTokenRequestDTO token) {
+	public ResponseEntity<RefreshTokenResponseDTO> refreshToken(@Valid @RequestBody RefreshTokenRequestDTO token) {
 		log.info("refreshToken");
-		return ResponseEntity.ok(service.refreshToken(token.getAccessToken()));
+		return ResponseEntity.ok(service.refreshToken(token.getRefreshToken()));
 	}
 	
 	
@@ -120,6 +124,40 @@ public class AuthController {
 	public ResponseEntity<HasRolesResponseDTO> hasRole(@Valid @RequestBody HasRolesRequestDTO token) {
 		log.info("hasRole");
 		return ResponseEntity.ok(new HasRolesResponseDTO(service.hasRole(token)));
+	}
+	
+	@ApiOperation(value = "Endpoint de reset de senha do usuário")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Requisição processada com Sucesso"),
+			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
+			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+
+	})
+	@PutMapping(value="/changePassword",consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAnyRole('ROLE_CHANGE_PASSWORD_ROLE')")
+	public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequestDTO usuario) {
+		log.info("ChangePassword user");
+		service.changePassword(usuario);
+		return ResponseEntity.ok().build();
+	}
+	
+	@ApiOperation(value = "Endpoint de reset de senha do usuário")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Requisição processada com Sucesso"),
+			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
+			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+
+	})
+	@PutMapping(value="/resetPassword",consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAnyRole('ROLE_RESET_PASSWORD_ROLE')")
+	public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequestDTO usuario) {
+		log.info("ChangePassword user");
+		service.resetPassword(usuario);
+		return ResponseEntity.ok().build();
 	}
 	
 }

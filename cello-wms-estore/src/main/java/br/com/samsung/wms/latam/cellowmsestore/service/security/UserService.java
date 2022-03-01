@@ -67,9 +67,13 @@ public class UserService {
 	
 	
 	public UserDTO save(SaveUserRequestDTO usuarioModel) throws UsernameNotFoundException {
-		UserEntity entity = repository.save(userMapper.convertSaveDtoToEntity(usuarioModel));
+		UserEntity entity = save(userMapper.convertSaveDtoToEntity(usuarioModel));
 		setRole(entity);
 		return userMapper.convertEntityToDto(entity);
+	}
+	
+	public UserEntity save(UserEntity usuarioModel) throws UsernameNotFoundException {		
+		return repository.save(usuarioModel);
 	}
 	
 	private void setRole(UserEntity usuarioModel) {
@@ -82,6 +86,8 @@ public class UserService {
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_IDENTITY_USER);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_GET_ROLES);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_HAS_ROLE);
+			listaRole.add(RoleAuthEnum.ROLE_CHANGE_PASSWORD_ROLE);
+			listaRole.add(RoleAuthEnum.ROLE_RESET_PASSWORD_ROLE);
 			
 			listaRole.add(RoleAuthEnum.ROLE_TEST_CREATE);
 			listaRole.add(RoleAuthEnum.ROLE_TEST_FINDALL);
