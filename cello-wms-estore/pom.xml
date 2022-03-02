@@ -59,13 +59,6 @@
             <version>${springfox-swagger2.version}</version>
         </dependency>
         		
-
-		<!-- Log -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-spring-boot</artifactId>
-		</dependency>
-		
 		<!-- Utils -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>

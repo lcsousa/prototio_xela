@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.samsung.wms.latam.cellowmsestore.exception.SecurityLocalException;
+import br.com.samsung.wms.latam.cellowmsestore.exception.SecurityBusinessException;
 
 @Component
 public class SecurityExceptionHandleEntryPoint implements AuthenticationEntryPoint {
@@ -23,7 +23,7 @@ public class SecurityExceptionHandleEntryPoint implements AuthenticationEntryPoi
 		
     	 httpServletResponse.setContentType("application/json");
     	 httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    	SecurityLocalException ex = SecurityLocalException.builder()
+    	SecurityBusinessException ex = SecurityBusinessException.builder()
 				.httpStatusCode(HttpStatus.UNAUTHORIZED)
 				.code(String.valueOf(HttpStatus.UNAUTHORIZED.value()))
 				.message("Acesso Negado.")

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import br.com.samsung.wms.latam.cellowmsestore.exception.BusinessException;
 import br.com.samsung.wms.latam.cellowmsestore.exception.ExceptionResolver;
-import br.com.samsung.wms.latam.cellowmsestore.exception.SecurityLocalException;
+import br.com.samsung.wms.latam.cellowmsestore.exception.SecurityBusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,7 +51,7 @@ public class ControlExceptionHandler {
 	@ExceptionHandler(value = { AccessDeniedException.class})
 	protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException eThrowable, WebRequest request) {
 		
-		SecurityLocalException ex = SecurityLocalException.builder()
+		SecurityBusinessException ex = SecurityBusinessException.builder()
 				.httpStatusCode(HttpStatus.FORBIDDEN)
 				.code(String.valueOf(HttpStatus.FORBIDDEN.value()))
 				.message("Falha na Autorização.")
