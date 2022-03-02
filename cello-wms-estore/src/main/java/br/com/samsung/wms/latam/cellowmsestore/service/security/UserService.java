@@ -82,7 +82,7 @@ public class UserService {
 			listaRole.add(RoleAuthEnum.ROLE_USER_CREATE);
 			listaRole.add(RoleAuthEnum.ROLE_USER_FINDALL);
 			
-			listaRole.add(RoleAuthEnum.ROLE_AUTH_REFRESH_TOKEN);
+			//listaRole.add(RoleAuthEnum.ROLE_AUTH_REFRESH_TOKEN);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_IDENTITY_USER);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_GET_ROLES);
 			listaRole.add(RoleAuthEnum.ROLE_AUTH_HAS_ROLE);

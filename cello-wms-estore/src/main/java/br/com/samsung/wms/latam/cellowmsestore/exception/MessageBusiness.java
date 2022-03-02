@@ -15,6 +15,7 @@ public enum MessageBusiness {
     NOT_FOUND(HttpStatus.NOT_FOUND,"01","Not Found","Registro(s) não encontrado(s)."),
     NUMBER_0_REQUIRED(HttpStatus.BAD_REQUEST, "01", "Erro de Validação", "Campo  nome deve conter ao menos um caractere 0"),
 	REFRESH_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "01", "Token Inválido", "O Token não é um refresh token válido."),
+	ACCESS_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "01", "Token Inválido", "O Token não é um access token válido."),
 	LOGIN_OR_PASSWORD_INVALID(HttpStatus.BAD_REQUEST, "01", "Usuário Inválido", "Login e/ou senha inválidos.");
 
     MessageBusiness(HttpStatus s, String c, String m, String d){

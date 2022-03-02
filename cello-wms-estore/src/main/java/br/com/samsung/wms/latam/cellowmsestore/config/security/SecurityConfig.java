@@ -24,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 
     
 	String[] whiteList ={"/v1/auth/login"
+			            , "/v1/auth/refreshToken"
 						,"/h2-console"
 						,"/v2/api-docs",
                         "/configuration/ui",

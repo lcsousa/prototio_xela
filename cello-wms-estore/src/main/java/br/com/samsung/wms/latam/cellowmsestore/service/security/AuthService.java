@@ -18,7 +18,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.ChangePasswordRequestDTO;
-import br.com.samsung.wms.latam.cellowmsestore.dto.security.HasRolesRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.LoginRequestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.RefreshTokenResponseDTO;
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.ResetPasswordRequestDTO;
@@ -124,6 +123,9 @@ public class AuthService {
 	
 	public UserDTO getUserByToken(String token) {
 		String login = getLoginByToken(token) ;
+		if(!validAccessToken(token)) {
+			throw MessageBusiness.ACCESS_TOKEN_INVALID.createException();
+		}
 		return userMapper.convertEntityToDto(userService.findByLogin(login));
 	}
 
@@ -179,6 +181,9 @@ public class AuthService {
 	}
 	
 	public List<RoleAuthEnum> getRolesByToken(String token) {
+		if(!validAccessToken(token)) {
+			throw MessageBusiness.ACCESS_TOKEN_INVALID.createException();
+		}
 		List<RoleAuthEnum> retorno = null;
 		String login = getLoginByToken(token) ;
 		if(!ObjectUtils.isEmpty(login)) {
@@ -189,11 +194,22 @@ public class AuthService {
 		}		
 		return retorno;
 	}
-	
-	public boolean hasRole(HasRolesRequestDTO hasRole) {
+	private boolean validAccessToken(String token) {
 		boolean retorno = false;
-		String login = getLoginByToken(hasRole.getToken()) ;
-		RoleAuthEnum role = RoleAuthEnum.valueOf(hasRole.getRole());
+		if(validateToken(token) && isAccessToken(token)) {
+			retorno = true;
+		}
+		return retorno;
+	}
+	public boolean hasRole(String token,String roleParam) {
+		
+		if(!validAccessToken(token)) {
+			throw MessageBusiness.ACCESS_TOKEN_INVALID.createException();
+		}
+		
+		boolean retorno = false;
+		String login = getLoginByToken(token) ;
+		RoleAuthEnum role = RoleAuthEnum.valueOf(roleParam);
 		if(!ObjectUtils.isEmpty(login) && !ObjectUtils.isEmpty(role)) {
 			UserEntity user = userService.findByLogin(login);
 			List<RoleAuthEnum> lisRoles = null;

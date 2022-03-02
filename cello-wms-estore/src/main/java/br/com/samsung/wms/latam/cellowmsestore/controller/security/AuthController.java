@@ -69,7 +69,7 @@ public class AuthController {
  
 	})
 	@PostMapping(value="/refreshToken",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasAnyRole('ROLE_AUTH_REFRESH_TOKEN')")	
+//	@PreAuthorize("hasAnyRole('ROLE_AUTH_REFRESH_TOKEN')")	
 	public ResponseEntity<RefreshTokenResponseDTO> refreshToken(@Valid @RequestBody RefreshTokenRequestDTO token) {
 		log.info("refreshToken");
 		return ResponseEntity.ok(service.refreshToken(token.getRefreshToken()));
@@ -123,7 +123,7 @@ public class AuthController {
 	@PreAuthorize("hasAnyRole('ROLE_AUTH_HAS_ROLE')")	
 	public ResponseEntity<HasRolesResponseDTO> hasRole(@Valid @RequestBody HasRolesRequestDTO token) {
 		log.info("hasRole");
-		return ResponseEntity.ok(new HasRolesResponseDTO(service.hasRole(token)));
+		return ResponseEntity.ok(new HasRolesResponseDTO(service.hasRole(token.getToken(),token.getRole())));
 	}
 	
 	@ApiOperation(value = "Endpoint de reset de senha do usuário")
