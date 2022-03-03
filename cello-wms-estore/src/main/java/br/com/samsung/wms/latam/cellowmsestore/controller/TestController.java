@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.samsung.wms.latam.cellowmsestore.dto.TestDTO;
 import br.com.samsung.wms.latam.cellowmsestore.exception.BusinessException.BusinessExceptionBody;
+import br.com.samsung.wms.latam.cellowmsestore.exception.SecurityBusinessException.SecurityExceptionBody;
 import br.com.samsung.wms.latam.cellowmsestore.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,8 +43,8 @@ public class TestController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = TestDTO.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class)
 
 	})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,8 +61,8 @@ public class TestController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso. registro localizado.", response = TestDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 404, message = "Not Found. Registro(s) não encontrado(s).", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class) })
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyRole('ROLE_TEST_FIND')")
 	public ResponseEntity<TestDTO> findById(@Valid @PathVariable Long id) throws Exception {
@@ -76,8 +77,8 @@ public class TestController {
 			@ApiResponse(code = 200, message = "Registro criado.", response = TestDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class) })
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyRole('ROLE_TEST_CREATE')")
 	public ResponseEntity<TestDTO> save(
@@ -94,8 +95,8 @@ public class TestController {
 			@ApiResponse(code = 200, message = "Registro Atualizado.", response = TestDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 404, message = "Not Found. Registro(s) não encontrado(s).", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class) })
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyRole('ROLE_TEST_UPDATE')")
 	public ResponseEntity<TestDTO> update(@Valid @PathVariable Long id,
@@ -113,8 +114,8 @@ public class TestController {
 			@ApiResponse(code = 200, message = "Registro Excluído.", response = TestDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 404, message = "Not Found. Registro(s) não encontrado(s).", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class) })
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class) })
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_TEST_DELETE')")
 	public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {

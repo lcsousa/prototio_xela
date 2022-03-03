@@ -27,6 +27,7 @@ import br.com.samsung.wms.latam.cellowmsestore.dto.security.TokenLoginResponseDT
 import br.com.samsung.wms.latam.cellowmsestore.dto.security.UserDTO;
 import br.com.samsung.wms.latam.cellowmsestore.entity.security.RoleAuthEnum;
 import br.com.samsung.wms.latam.cellowmsestore.exception.BusinessException.BusinessExceptionBody;
+import br.com.samsung.wms.latam.cellowmsestore.exception.SecurityBusinessException.SecurityExceptionBody;
 import br.com.samsung.wms.latam.cellowmsestore.service.security.AuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,8 +50,8 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = TokenLoginResponseDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class)
 
 	})
 	@PostMapping(value="/login",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -64,8 +65,8 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = RefreshTokenResponseDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class)
  
 	})
 	@PostMapping(value="/refreshToken",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -82,8 +83,8 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = UserDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class)
 
 	})
 	@PostMapping(value="/identityUser",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -99,8 +100,8 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = RoleAuthEnum.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class)
 
 	})
 	@PostMapping(value="/getRoles",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -115,8 +116,8 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso", response = HasRolesResponseDTO.class),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = BusinessExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = BusinessExceptionBody.class)
 
 	})
 	@PostMapping(value="/hasRole",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -131,8 +132,8 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso"),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class)
 
 	})
 	@PutMapping(value="/changePassword",consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -148,8 +149,8 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "Requisição processada com Sucesso"),
 			@ApiResponse(code = 500, message = "Erro interno", response = BusinessExceptionBody.class),
 			@ApiResponse(code = 400, message = "Bad Request. Parâmetro(s) inválido(s)", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autorizado", response = BusinessExceptionBody.class),
-			@ApiResponse(code = 403, message = "Forbidden - Usuário não Autenticado", response = BusinessExceptionBody.class)
+			@ApiResponse(code = 401, message = "Unauthorized - Usuário não Autenticado", response = SecurityExceptionBody.class),
+			@ApiResponse(code = 403, message = "Forbidden - Usuário não Atorizado para acessar o método.", response = SecurityExceptionBody.class)
 
 	})
 	@PutMapping(value="/resetPassword",consumes = MediaType.APPLICATION_JSON_VALUE)
